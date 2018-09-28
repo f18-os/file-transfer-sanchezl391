@@ -45,14 +45,14 @@ while True:
     if not payload:
         break
     mssg += payload.decode('utf8')
-    # if(not fileName):
-    #     fileName += mssg.split(" ", 1)[0]
-    #     fileNameLen = len(fileName)
-        # mssg = mssg[fileNameLen + 1:]
+    if(not fileName):
+        fileName += mssg.split(" ", 1)[0]
+        fileNameLen = len(fileName)
+        mssg = mssg[fileNameLen + 1:]
     payload += b"!"             # make emphatic!
     framedSend(sock, payload, debug)
     
-# print("mssg: " + mssg)
+print("mssg: " + mssg)
 
 # Create file from data sent over
 f = open(fileName, "w")

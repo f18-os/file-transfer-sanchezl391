@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 # Echo client program
-import socket, sys, re, params, os.path
+import socket, sys, re, params, os.path, base64
 
 from framedSock import framedSend, framedReceive
 
@@ -63,27 +63,26 @@ if s is None:
     sys.exit(1)
 
 # Read from a file
-with open(inputFileName, 'wb') as file:
-    read_data = file.read()
-    bytes = bytearray(read_data)
+with open(inputFileName) as f:
+    read_data = f.read()
+
 
 # Send mssg
 # Control Flow of transfer
-# mssg = inputFileName + ' '
+mssg = inputFileName + ' ' + read_data
+for i in range(200):
+    mssg+='a'
 
-# for i in range(200):
-#     mssg+='a'
+print('Sending ' + mssg)
 
-# print('Sending ' + mssg)
+byteMssg = bytearray(mssg, "utf8")
+bytes = len(byteMssg)
 
-# byteMssg = bytearray(mssg, "utf8")
-numBytes = len(bytes)
-
-while(len(numBytes)):
+while(len(byteMssg)):
     try:
-        tmpMssg = bytes[0:100] 
+        tmpMssg = byteMssg[0:100] 
         framedSend(s, tmpMssg, debug)
-        bytes = bytes[100:] # reducing # of bytes
+        byteMssg = byteMssg[100:] # reducing # of bytes
         print("received:", framedReceive(s, debug))
     except IndexError:
         exit(1)
