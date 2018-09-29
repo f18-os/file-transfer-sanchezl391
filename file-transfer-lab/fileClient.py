@@ -63,26 +63,37 @@ if s is None:
     sys.exit(1)
 
 # Read from a file
-with open(inputFileName) as f:
-    read_data = f.read()
-
+# with open(inputFileName) as f:
+#     read_data = f.read()
+f = open("pdf.pdf", "rb")
+# mssgInBytes = f.read()
+# stringBytes = bytearray(string, 'utf8')
 
 # Send mssg
 # Control Flow of transfer
-mssg = inputFileName + ' ' + read_data
-for i in range(200):
-    mssg+='a'
+# mssg = inputFileName + ' ' + read_data
+# for i in range(200):
+#     mssg+='a'
 
-print('Sending ' + mssg)
+# print('Sending ' + mssg)
 
-byteMssg = bytearray(mssg, "utf8")
-bytes = len(byteMssg)
+# byteMssg = bytearray(mssg, "utf8")
 
-while(len(byteMssg)):
+# while(True):
+#     try:
+#         tmpMssg = mssgInBytes[0:100] 
+#         framedSend(s, tmpMssg, debug)
+#         mssgInBytes = mssgInBytes[100:] # reducing # of bytes
+#         print("received:", framedReceive(s, debug))
+#     except IndexError:
+#         exit(1)
+mssgInBytes = f.read(100)
+while(mssgInBytes):
     try:
-        tmpMssg = byteMssg[0:100] 
-        framedSend(s, tmpMssg, debug)
-        byteMssg = byteMssg[100:] # reducing # of bytes
-        print("received:", framedReceive(s, debug))
+        print('in loops')
+        framedSend(s, mssgInBytes, debug)
+        # print("received:", framedReceive(s, debug))
+        mssgInBytes = f.read(100)
     except IndexError:
         exit(1)
+    
