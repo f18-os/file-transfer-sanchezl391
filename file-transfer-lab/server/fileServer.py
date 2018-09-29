@@ -4,7 +4,7 @@ import sys
 sys.path.append("../") 
 sys.path.append('../../lib') # params
 
-import re, socket, params, base64
+import re, socket, params
 
 # Check for server listen port
 try:
@@ -51,7 +51,7 @@ while True:
     mssg += payload.decode('utf-8').replace("\\n", "\n")
     print('mssg inside loop: ' + mssg)
     if(not fileName):
-        fileName += mssg.split(" ", 1)[0]
+        fileName = mssg.split(" ", 1)[0]
         fileNameLen = len(fileName)
         mssg = mssg[fileNameLen + 1:]
     payload += b"!"             # make emphatic!

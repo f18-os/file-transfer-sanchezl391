@@ -1,7 +1,8 @@
 #! /usr/bin/env python3
 
 import sys
-sys.path.append('../lib') # params
+sys.path.append('../../lib') # params
+sys.path.append('../') # framedSock
 import socket, re, params, os.path, base64
 
 from framedSock import framedSend, framedReceive
