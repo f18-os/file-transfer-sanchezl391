@@ -9,36 +9,15 @@ from framedSock import framedSend, framedReceive
 
 # check for server's address and port arguments
 try:
-    address = sys.argv[0]
-    port = sys.argv[1]
+    serverHost = sys.argv[0]
+    serverPort = int(sys.argv[1])
     inputFileName = sys.argv[2]
 except IndexError:
-    address = "127.0.0.1"
-    port = "50000"
+    serverHost = "127.0.0.1"
+    serverPort = int("50000")
     inputFileName = "test.txt"
 
-switchesVarDefaults = (
-    (('-s', '--server'), 'server', address  + ':' + port),
-    (('-d', '--debug'), "debug", False), # boolean (set if present)
-    (('-?', '--usage'), "usage", False), # boolean (set if present)
-    )
-
-
-progname = "framedClient"
-paramMap = params.parseParams(switchesVarDefaults)
-
-server, usage, debug  = paramMap["server"], paramMap["usage"], paramMap["debug"]
-
-if usage:
-    params.usage()
-
-
-try:
-    serverHost, serverPort = re.split(":", server)
-    serverPort = int(serverPort)
-except:
-    print("Can't parse server:port from '%s'" % server)
-    sys.exit(1)
+debug = 0
 
 s = None
 for res in socket.getaddrinfo(serverHost, serverPort, socket.AF_UNSPEC, socket.SOCK_STREAM):

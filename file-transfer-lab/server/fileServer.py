@@ -8,23 +8,10 @@ import re, socket, params, os.path
 
 # Check for server listen port
 try:
-    port = sys.argv[0]
+    listenPort = sys.argv[0]
 except IndexError:
-    port = "50001"
-
-switchesVarDefaults = (
-    (('-l', '--listenPort') ,'listenPort', int(port)),
-    (('-d', '--debug'), "debug", False), # boolean (set if present)
-    (('-?', '--usage'), "usage", False), # boolean (set if present)
-)
-
-progname = "echoserver"
-paramMap = params.parseParams(switchesVarDefaults)
-
-debug, listenPort = paramMap['debug'], paramMap['listenPort']
-
-if paramMap['usage']:
-    params.usage()
+    listenPort = int("50001")
+debug = 0
 
 lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # listener socket
 bindAddr = ("127.0.0.1", listenPort)
