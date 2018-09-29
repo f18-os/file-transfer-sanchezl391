@@ -1,1 +1,2 @@
-hello
+this is a sample text that
+will be transferred to the server

@@ -69,10 +69,11 @@ class Fwd:
     def doRecv(self):
         try:
             b = self.inSock.recv(self.bufCap - len(self.buf))
+            if len(b):
+                self.buf += b
         except:
             self.conn.die()
-        if len(b):
-            self.buf += b
+        
         else:
             self.inClosed = 1
         self.checkDone()

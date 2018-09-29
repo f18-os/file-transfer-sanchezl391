@@ -14,8 +14,8 @@ try:
     inputFileName = sys.argv[2]
 except IndexError:
     address = "127.0.0.1"
-    port = "50001"
-    inputFileName = "tet.txt"
+    port = "50000"
+    inputFileName = "test.txt"
 
 switchesVarDefaults = (
     (('-s', '--server'), 'server', address  + ':' + port),
