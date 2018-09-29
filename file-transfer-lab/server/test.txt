@@ -1,0 +1,41 @@
+I want the newline \
+ to show up explicitly when printing a string retrieved from elsewhere. So if the string is 'abc\
+def' I don't want this to happen:
+
+>>> print(line)
+abc
+def
+but instead this:
+
+>>> print(line)
+abc\
+def
+Is there a way to modify print, or modify the argument, or maybe another function entirely, to accomplish this?
+
+I want the newline \
+ to show up explicitly when printing a string retrieved from elsewhere. So if the string is 'abc\
+def' I don't want this to happen:
+
+>>> print(line)
+abc
+def
+but instead this:
+
+>>> print(line)
+abc\
+def
+Is there a way to modify print, or modify the argument, or maybe another function entirely, to accomplish this?
+
+I want the newline \
+ to show up explicitly when printing a string retrieved from elsewhere. So if the string is 'abc\
+def' I don't want this to happen:
+
+>>> print(line)
+abc
+def
+but instead this:
+
+>>> print(line)
+abc\
+def
+Is there a way to modify print, or modify the argument, or maybe another function entirely, to accomplish this?

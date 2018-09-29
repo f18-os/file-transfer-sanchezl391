@@ -1,6 +1,10 @@
 #! /usr/bin/env python3
 
-import sys, re, socket, params, base64
+import sys
+sys.path.append("../") 
+sys.path.append('../../lib') # params
+
+import re, socket, params, base64
 
 # Check for server listen port
 try:
@@ -37,30 +41,25 @@ from framedSock import framedSend, framedReceive
 
 
 # Get mssg
-# fileName = ''
-# mssg = ''
-# mssg = ''
+fileName = ''
+mssg = ''
 while True:
     payload = framedReceive(sock, debug)
     if debug: print("rec'd: ", payload)
     if not payload:
         break
-    # mssg += payload.decode('utf8')
-    mssg = payload
-    # mssg+= str(payload)
-    # if(not fileName):
-    #     fileName += mssg.split(" ", 1)[0]
-    #     fileNameLen = len(fileName)
-    #     mssg = mssg[fileNameLen + 1:]
+    mssg += payload.decode('utf-8').replace("\\n", "\n")
+    print('mssg inside loop: ' + mssg)
+    if(not fileName):
+        fileName += mssg.split(" ", 1)[0]
+        fileNameLen = len(fileName)
+        mssg = mssg[fileNameLen + 1:]
     payload += b"!"             # make emphatic!
     framedSend(sock, payload, debug)
     
-# print("mssg: " + mssg)
-
-# Create file from data sent over
-# f = open(fileName, "w")
-f = open("pdf.pdf", "wb")
-# Must write bytes into file
-# mssgBytes = bytearray(mssg, 'utf8')
+print('mssg outside loop: ' + mssg)
+f = open(fileName, "w")
 f.write(mssg)
 f.close()
+sock.close()
+lsock.close()
