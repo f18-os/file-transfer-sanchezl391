@@ -15,7 +15,7 @@ try:
 except IndexError:
     address = "127.0.0.1"
     port = "50001"
-    inputFileName = "test.txt"
+    inputFileName = "tet.txt"
 
 switchesVarDefaults = (
     (('-s', '--server'), 'server', address  + ':' + port),
@@ -64,21 +64,27 @@ if s is None:
     print('could not open socket')
     sys.exit(1)
 
-f = open(inputFileName, "r")
-
-mssg = inputFileName + ' ' + f.read(100)
-mssgBytes = mssg.encode("unicode_escape")
-while True:
-    try:
-        if mssg == '':
-            break
-        framedSend(s, mssgBytes, debug)
-        print("received:", framedReceive(s, debug))
-        mssg = f.read(100)
+# Error Handling
+try:
+    f = open(inputFileName, "r")
+    originalMssg = f.read(100)
+    if(not len(originalMssg)):
+        print("The file you are trying to transfer is empty. Cancelling transfer.")
+    else:
+        mssg = inputFileName + ' ' + originalMssg
         mssgBytes = mssg.encode("unicode_escape")
-        
-    except IndexError:
-        print("Error")
-        exit(1)
+        while True:
+            # try:
+            if mssg == '':
+                break
+            framedSend(s, mssgBytes, debug)
+            print("received:", framedReceive(s, debug))
+            mssg = f.read(100)
+            mssgBytes = mssg.encode("unicode_escape")
+                
+            # except IndexError:
+            #     exit(1)
 
-f.close()
+        f.close()
+except FileNotFoundError:
+    print('Error. You did not specify a file to transfer or it wasnt found')

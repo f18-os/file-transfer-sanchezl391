@@ -4,7 +4,7 @@ import sys
 sys.path.append("../") 
 sys.path.append('../../lib') # params
 
-import re, socket, params
+import re, socket, params, os.path
 
 # Check for server listen port
 try:
@@ -39,7 +39,6 @@ print("connection rec'd from", addr)
 
 from framedSock import framedSend, framedReceive
 
-
 # Get mssg
 fileName = ''
 mssg = ''
@@ -49,17 +48,22 @@ while True:
     if not payload:
         break
     mssg += payload.decode('utf-8').replace("\\n", "\n")
-    print('mssg inside loop: ' + mssg)
     if(not fileName):
         fileName = mssg.split(" ", 1)[0]
         fileNameLen = len(fileName)
         mssg = mssg[fileNameLen + 1:]
     payload += b"!"             # make emphatic!
     framedSend(sock, payload, debug)
-    
-print('mssg outside loop: ' + mssg)
-f = open(fileName, "w")
-f.write(mssg)
-f.close()
+
+if os.path.isfile(fileName):
+    print("The file already exists on the server! Another file will not be created.")
+else:
+    if fileName:    
+        f = open(fileName, "w")
+        f.write(mssg)
+        f.close()
+    else:
+        print('The file you are trying to transfer is empty. Cancelling transfer.')
+
 sock.close()
 lsock.close()
