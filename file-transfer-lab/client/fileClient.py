@@ -52,7 +52,7 @@ try:
     else:
         mssg = inputFileName + ' ' + originalMssg
         mssgBytes = mssg.encode()
-        while True:
+        while True: # Send bytes in 100 byte pieces until there is no more to send
             if mssg == '':
                 break
             framedSend(s, mssgBytes, debug) # send mssg
