@@ -19,38 +19,35 @@ lsock.bind(bindAddr)
 lsock.listen(5)
 print("listening on:", bindAddr)
 
-sock, addr = lsock.accept()
-
-print("connection rec'd from", addr)
-
-
-from framedSock import framedSend, framedReceive
-
-# Get mssg
-fileName = ''
-mssg = ''
 while True:
-    payload = framedReceive(sock, debug)
-    if debug: print("rec'd: ", payload)
-    if not payload:
-        break
-    mssg += payload.decode('utf-8').replace("\\n", "\n")
-    if(not fileName):
-        fileName = mssg.split(" ", 1)[0]
-        fileNameLen = len(fileName)
-        mssg = mssg[fileNameLen + 1:]
-    payload += b"!"             # make emphatic!
-    framedSend(sock, payload, debug)
+    sock, addr = lsock.accept()
 
-if os.path.isfile(fileName):
-    print("The file already exists on the server! Another file will not be created.")
-else:
-    if fileName:    
-        f = open(fileName, "w")
-        f.write(mssg)
-        f.close()
-    else:
-        print('The file you are trying to transfer is empty. Cancelling transfer.')
+    from framedSock import framedSend, framedReceive
 
-sock.close()
-lsock.close()
+    if not os.fork():
+        print("new child process handling connection from", addr)
+        # Get mssg
+        fileName = ''
+        mssg = ''
+        while True:
+            payload = framedReceive(sock, debug)
+            if debug: print("rec'd: ", payload)
+            if not payload:
+                break
+            mssg += payload.decode('utf-8').replace("\\n", "\n")
+            if(not fileName):
+                fileName = mssg.split(" ", 1)[0]
+                fileNameLen = len(fileName)
+                mssg = mssg[fileNameLen + 1:]
+            payload += b"!"             # make emphatic!
+            framedSend(sock, payload, debug)
+
+        if os.path.isfile(fileName):
+            print("The file already exists on the server! Another file will not be created.")
+        else:
+            if fileName:    
+                f = open(fileName, "w")
+                f.write(mssg)
+                f.close()
+            else:
+                print('The file you are trying to transfer is empty. Cancelling transfer.')
