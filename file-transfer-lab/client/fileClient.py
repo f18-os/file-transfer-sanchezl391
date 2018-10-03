@@ -43,26 +43,22 @@ if s is None:
     print('could not open socket')
     sys.exit(1)
 
-# Error Handling
+
 try:
     f = open(inputFileName, "r")
-    originalMssg = f.read(100)
+    originalMssg = f.read(100) # read 100 bytes from file at a time
     if(not len(originalMssg)):
         print("The file you are trying to transfer is empty. Cancelling transfer.")
     else:
         mssg = inputFileName + ' ' + originalMssg
-        mssgBytes = mssg.encode("unicode_escape")
+        mssgBytes = mssg.encode()
         while True:
-            # try:
             if mssg == '':
                 break
-            framedSend(s, mssgBytes, debug)
+            framedSend(s, mssgBytes, debug) # send mssg
             print("received:", framedReceive(s, debug))
             mssg = f.read(100)
-            mssgBytes = mssg.encode("unicode_escape")
-                
-            # except IndexError:
-            #     exit(1)
+            mssgBytes = mssg.encode()
 
         f.close()
 except FileNotFoundError:
